@@ -1,0 +1,34 @@
+# Capítulo 4: Backup and Restore
+
+COPY <tablename> FROM '<filename with path>';
+
+# para ignorar a primeira linha, com os nomes das variáveis, utilizamos o
+# exemplo abaixo
+
+COPY user FROM '/home/user/user_data' WITH DELIMITER '|' READER;
+
+# para fazer o caminho inverso, copiar uma tabela em um arquivo .csv, utilizamos
+
+COPY user FROM '/home/user/user_data' WITH DELIMITER '|';
+
+# para copiar o resultado de uma consulta SQL em um arquivo devemos utilizar
+
+COPY ("consulta SQL") TO '<filename with path>';
+
+# caso tenha sido uma consulta muito grande, você também pode copiar o resultado
+# da consulta para um arquivo compactado
+
+COPY ("consulta SQL") TO '<filename with path>';
+
+# para copiar para um arquivo compactado, utilizamos o seguinte comando
+
+COPY ("consulta SQL") TO PROGRAM 'gzip > <filename with path>';
+
+# podemos também fazer a exportação diretamente da barra de comando, sem ser
+# necessário acessar o postgres utilizando comandos como os de baixo
+
+psql -p \<port> -U \<username> -d \<database> -A -F<delimiter> -c\<sql to execute> \> \<output
+filename with path>
+
+psql -p 5432 -U postgres -d test_database -A -F, -c "select * from user" >
+/home/user/user_data.csv

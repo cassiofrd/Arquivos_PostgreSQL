@@ -1,0 +1,50 @@
+# Chapter 3: aggregate functions
+
+# Para selecionar uma base de dados basta utilizar o comando
+
+\c database;
+
+# para criar a base de dados devemos fazer
+
+CREATE DATABASE name;
+
+# Vamos criar uma tabela nova que nos dê dados bons para treinarmos
+
+CREATE TABLE TABELA_Cap3(
+	id serial PRIMARY KEY,
+	nome VARCHAR ( 50 ) NOT NULL,
+	tem_cachorro VARCHAR ( 50 ) NOT NULL,
+	idade INTEGER NOT NULL,
+	filhos INTEGER NOT NULL
+);
+
+INSERT INTO TABELA_Cap3(nome, tem_cachorro, idade, filhos)
+VALUES ('Igor','sim',44, 1),
+('Telmo','não',57, 2),
+('Katia','não',23, 0),
+('Laura','sim',11, 0),
+('Kino','sim',44, 3),
+('Suelem','sim',21, 1),
+('Carlos','não',38, 2),
+('Ibson','sim',12, 0),
+('Belmonte','não',67, 3),
+('Amália','sim',92, 5);
+
+# Podemos utilizar funções agregadoras para obter estatísticas simples das tabelas
+# que estamos utilizando.
+# Conseguimos isso com as funções min(), max() e avg()
+
+SELECT min(idade), max(idade), avg(idade) FROM TABELA_Cap3;
+
+# podemos também selecionar todos os strings, separados por vírgulas, que fazem
+# parte de cada um dos grupos
+
+SELECT string_agg (nome, ', ') AS nome, tem_cachorro 
+FROM TABELA_Cap3
+GROUP BY tem_cachorro;
+
+# podemos obter, inclusive, o valor do coeficiente da regressão MQO entre duas
+# variáveis x e y que tivérmos na tabela, basta utilizaro  comando regr_slope(Y,X)
+
+regr_slope(filhos, idade)
+SELECT regr_slope(filhos, idade) from TABELA_Cap3 GROUP BY tem_cachorro;

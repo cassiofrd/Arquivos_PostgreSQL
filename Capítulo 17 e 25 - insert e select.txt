@@ -1,0 +1,40 @@
+# Capítulo 17: insert
+
+# importante, com o postgres sempre utilizamos letras minúsculas para os nomes
+# de todas as colunas e tabelas. As maiúsculas são para comandos
+# o comando mais simples de insert é o para inserir dados em uma tabela
+# lembrando que se alguma variável tiver condicionante NOT NULL devemos
+# acrescentar valores para essas variáveis também
+
+INSERT INTO person VALUES (1, 'john doe', 25, "new york");
+
+# mas se quisérmos acrescentar valores a apenas algumas das variáveis, devemos
+# especificar em quais delas estes valores devem ser acrescidos
+
+INSERT INTO person (name, age) VALUES ('john doe', 25);
+
+# podemos acrescentar múltiplas linhas à nossa base de dados ao mesmo tempo
+# usando comandos no seguinte formato
+
+INSERT INTO person (name, age) VALUES
+('john doe', 25),
+('jane doe', 20);
+
+# podemos passar os dados de uma tabela para outra utilizando INSERT desde que
+# as duas tabelas tenham exatamente as mesmas colunas. No exemplo abaixo vamos
+# utilizar como exemplo as tabelas person e tmp_person que tem exatamente as
+# mesmas colunas. Vamos inserir na tabela person todas as linhas da tabela
+# tmp_person que apresentam idade inferior a 30
+
+INSERT INT person SELECT * FROM tmp_person WHERE age < 30;
+
+# agora vamos utilizar o comando select, para o qual temos que saber o nome da
+# base de dados "schema_name" e o nome da tabela "table_name"
+# vejamos alguns exemplos de aplicação
+
+# selecionar tudo na tabela onde o id=1
+SELECT * FROM schema_name.table_name WHERE id = 1;
+# selecionar id onde o username=? e o pass é igual a ?
+SELECT id FROM schema_name.table_name WHERE username = 'root' AND pass = 'toor';
+# vamos selecionar o nome sempre que o id for diferente de 1
+SELECT first_name FROM schema_name.table_name WHERE id != 1;

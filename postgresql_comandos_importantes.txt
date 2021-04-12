@@ -1,0 +1,77 @@
+# para iniciar o postgres eu devo abrir o terminal, colocar o código a baixo e
+# depois a senha
+
+psql -U postgres
+
+# para criar a base de dados "base1" vamos utilizar o seguinte comando abaixo
+
+CREATE DATABASE base1;
+
+# com o comando "\l" temos na tela todas as bases de dados salvas até então
+# vamos selecionar uma base de dados
+
+\c base1;
+
+# vamos agora criar uma tabela para colocar em nossa base de dados
+
+CREATE TABLE accounts (
+	user_id serial PRIMARY KEY,
+	username VARCHAR ( 50 ) UNIQUE NOT NULL,
+	password VARCHAR ( 50 ) NOT NULL,
+	email VARCHAR ( 255 ) UNIQUE NOT NULL,
+	created_on TIMESTAMP NOT NULL
+);
+
+# agora vamos inserir dados nesta tabela que criamos
+
+INSERT INTO accounts(username, password, email, created_on)
+VALUES ('Cassio Freitas Daldegan','12345','cassioealan@ig.com.br','2021-04-07 15:34:55');
+
+# vamos ver os dados da nossa tabela
+
+SELECT * FROM accounts;
+
+# agora vamos modificar um dado naquela linha da tabela
+
+UPDATE accounts
+SET email = 'cassiofrd@gmail.com'
+WHERE user_id=2;
+
+INSERT INTO accounts(username, password, email, created_on)
+VALUES ('Fubá','54321','fubazinho@bol.com.br','2021-04-07 15:57:57'),
+('Roque','11111','roque@aol.com.br','2021-04-07 16:01:23'),
+('Panda','99999','egua@ig.com.br','2021-04-07 16:02:24');
+
+# vamos aprender a deletar a linha mostrando aqueles dados que foram deletados
+
+DELETE FROM accounts
+WHERE user_id=6
+RETURNING *;
+
+# vamos agora criar outra tabela que tenha informações da nossa tabela accounts
+
+CREATE TABLE contacts(
+	phone VARCHAR(15),
+	contact_id serial PRIMARY KEY,
+	username VARCHAR(50) NOT NULL,
+	FOREIGN KEY (username) REFERENCES accounts (username)
+);
+
+# agora vamos colocar os dados
+
+INSERT INTO contacts(phone, username)
+VALUES ('31988338926','Cassio Freitas Daldegan');
+
+# vamos selecionar as duas tabelas
+# se as variáveis tiverem os mesmos nomes nas duas tabelas, torna-se necessário
+# colocar a variável no formato "nome da tabela"."nome da variável", caso
+# não tenha nome repetido, pode-se colocar apenas o nome da variável
+
+SELECT accounts.username, password, email, created_on, phone, user_id, contact_id 
+FROM accounts, contacts WHERE accounts.username = contacts.username;
+
+# porém, a melhor maneira de fazer esta solução é utilizar o comando INNER JOIN,
+# pois este irá impedir o aparecimento de variáveis repetidas
+
+SELECT * 
+FROM accounts INNER JOIN contacts ON (accounts.username = contacts.username);
